@@ -76,12 +76,12 @@ function GeospatialHotspots({ hotspots }: { hotspots: any[] }) {
 
         {/* Map Container with Real World Map */}
         <div className="relative bg-white rounded-lg overflow-hidden border-2 border-gray-300" style={{ height: '700px' }}>
-          {/* Real World Map as background - Natural Earth map */}
+          {/* Real World Map as background - Equirectangular projection for accurate coordinate alignment */}
           <img 
-            src="https://eoimages.gsfc.nasa.gov/images/imagerecords/73000/73909/world.topo.bathy.200412.3x5400x2700.jpg" 
+            src="https://upload.wikimedia.org/wikipedia/commons/8/83/Equirectangular_projection_SW.jpg" 
             alt="World Map"
-            className="absolute inset-0 w-full h-full object-cover opacity-40"
-            style={{ objectPosition: 'center', objectFit: 'cover' }}
+            className="absolute inset-0 w-full h-full opacity-30"
+            style={{ objectFit: 'fill' }}
           />
 
           {/* Coordinate labels */}
@@ -103,17 +103,13 @@ function GeospatialHotspots({ hotspots }: { hotspots: any[] }) {
           {/* Hotspot markers with category-specific icons */}
           <div className="absolute inset-0">
             {filteredHotspots.map((hotspot, idx) => {
-              // Original coordinates for tooltip display
+              // Use true coordinates directly
               const trueLat = hotspot.latitude;
               const trueLon = hotspot.longitude;
               
-              // Apply visual offset to align with map (shift east and south)
-              const visualLon = trueLon + 15; // Shift east to align with continents
-              const visualLat = trueLat - 5;  // Shift south to align better
-              
-              // Calculate position using adjusted coordinates for display
-              const x = ((visualLon + 180) / 360) * 100;
-              const y = ((90 - visualLat) / 180) * 100;
+              // Calculate position using TRUE coordinates (no offset)
+              const x = ((trueLon + 180) / 360) * 100;
+              const y = ((90 - trueLat) / 180) * 100;
               const baseSize = Math.min(Math.sqrt(hotspot.count) * 2, 40);
               const category = hotspot.primary_category;
               const color = categoryColors[category]?.hex || '#64748b';
