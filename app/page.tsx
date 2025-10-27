@@ -344,7 +344,13 @@ function AnalysisImageGallery({ images }: { images: any }) {
       'events_over_time_monthly',
       'category_concentration',
       'temporal_analysis',
-      'hotspot_analysis'
+      'hotspot_analysis',
+      'multipanel_figure',
+      'multi_panel_figure',
+      'multipanel',
+      'multi panel',
+      'infographic_map',
+      'infographic'
     ];
     return !excludePatterns.some(pattern => lower.includes(pattern));
   });
@@ -376,7 +382,9 @@ function InteractiveMapsGallery({ maps }: { maps: any }) {
       'master_dashboard',
       'cinematic_timeline',
       'cumulative_buildup',
-      'animated_timeline'
+      'animated_timeline',
+      'multipanel_figure',
+      'infographic_map'
     ];
     return !excludePatterns.some(pattern => lower.includes(pattern));
   });
@@ -387,8 +395,8 @@ export default function Dashboard() {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState('Overview');
-  const tabs = ['Executive Overview', 'Geospatial Analysis', 'Temporal Analysis', 'Statistical Visualizations', 'Interactive Maps'];
+  const [activeTab, setActiveTab] = useState('Executive Overview');
+  const tabs = ['Executive Overview', 'Geospatial Analysis', 'Temporal Analysis', 'Interactive Maps', 'Statistical Visualizations'];
 
   useEffect(() => {
     fetch('/analysis_data.json').then(res => {if(!res.ok) throw new Error('Run python script'); return res.json();}).then(d => {setData(d); setLoading(false);}).catch(e => {setError(e.message); setLoading(false);});
@@ -407,10 +415,51 @@ export default function Dashboard() {
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between flex-wrap gap-4">
             <div className="flex items-center space-x-4">
-              <div className="w-12 h-12 bg-gray-900 rounded flex items-center justify-center text-white">
-                <Globe className="w-6 h-6" />
+              <div className="w-12 h-12 flex items-center justify-center">
+                <svg width="48" height="48" viewBox="0 0 110 92" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="55" cy="46" r="44" fill="#111827" />
+                  <ellipse cx="55" cy="46" rx="42" ry="13" fill="none" stroke="white" strokeWidth="1.5" opacity="0.6" />
+                  <circle cx="28" cy="28" r="2" fill="white" />
+                  <circle cx="33" cy="24" r="1.5" fill="white" />
+                  <circle cx="77" cy="33" r="2" fill="white" />
+                  <circle cx="72" cy="28" r="1.5" fill="white" />
+                  <circle cx="82" cy="26" r="1.5" fill="white" />
+                  <text x="55" y="52" fontFamily="Arial, sans-serif" fontSize="14" fontWeight="bold" fill="white" textAnchor="middle">NASA</text>
+                  <path d="M 33,42 L 45,30 L 57,42 L 69,30 L 77,42" stroke="white" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+                </svg>
               </div>
-              <div><h1 className="text-2xl font-bold text-gray-900">NASA EONET Analytics Platform</h1><p className="text-sm text-gray-600">Earth Observation Natural Event Tracker | Developed by Sujan Bhattarai</p></div>
+              <div>
+                <h1 className="text-2xl font-bold text-gray-900">NASA EONET Analytics Platform</h1>
+                <div className="flex items-center gap-2 mt-1 flex-wrap">
+                  <p className="text-sm font-bold text-gray-900">Developed by Sujan Bhattarai</p>
+                  <div className="flex items-center gap-2">
+                    <a 
+                      href="https://github.com/Sujan-Bhattarai12" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-gray-900 hover:text-gray-600 transition-colors"
+                      title="GitHub Profile"
+                    >
+                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                        <path fillRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clipRule="evenodd" />
+                      </svg>
+                    </a>
+                    <a 
+                      href="https://www.linkedin.com/in/bhattarai1/" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-gray-900 hover:text-gray-600 transition-colors"
+                      title="LinkedIn Profile"
+                    >
+                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                      </svg>
+                    </a>
+                  </div>
+                  <span className="text-gray-400">|</span>
+                  <p className="text-sm text-gray-600">Earth Observation Natural Event Tracker</p>
+                </div>
+              </div>
             </div>
             <div className="text-right"><p className="text-sm text-gray-900 font-semibold">{metadata.date_range.start} → {metadata.date_range.end}</p><p className="text-xs text-gray-600">{metadata.total_observations.toLocaleString()} Observations</p></div>
           </div>
@@ -468,8 +517,12 @@ export default function Dashboard() {
                   <YAxis stroke="#6b7280" style={{fontSize:'14px',fontWeight:600}}/>
                   <Tooltip contentStyle={{backgroundColor:'#ffffff',border:'1px solid #d1d5db',borderRadius:'8px'}}/>
                   <Legend/>
-                  <Bar dataKey="total" fill="#3b82f6" name="Total" radius={[8,8,0,0]}/>
+                  <Bar dataKey="total" fill="#3b82f6" name="Total Events" radius={[8,8,0,0]}/>
                   <Bar dataKey="storms" fill="#8b5cf6" name="Storms" radius={[8,8,0,0]}/>
+                  <Bar dataKey="wildfires" fill="#ef4444" name="Wildfires" radius={[8,8,0,0]}/>
+                  <Bar dataKey="volcanoes" fill="#f97316" name="Volcanoes" radius={[8,8,0,0]}/>
+                  <Bar dataKey="floods" fill="#06b6d4" name="Floods" radius={[8,8,0,0]}/>
+                  <Bar dataKey="ice" fill="#a855f7" name="Ice" radius={[8,8,0,0]}/>
                 </BarChart>
               </ResponsiveContainer>
             </div>
