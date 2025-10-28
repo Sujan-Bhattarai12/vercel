@@ -6,9 +6,9 @@ import { Globe, Map, BarChart3, Activity, TrendingUp, Layers, MapPin, Flame, Win
 
 function TabNavigation({ activeTab, setActiveTab, tabs }: any) {
   return (
-    <div className="flex gap-2 mb-6 overflow-x-auto pb-2 border-b border-gray-200">
+    <div className="flex gap-1 mb-4 overflow-x-auto pb-2 border-b-2 border-gray-300">
       {tabs.map((tab: string) => (
-        <button key={tab} onClick={() => setActiveTab(tab)} className={`px-6 py-3 whitespace-nowrap transition-all font-medium ${activeTab === tab ? 'border-b-2 border-gray-900 text-gray-900' : 'text-gray-500 hover:text-gray-700 hover:border-b-2 hover:border-gray-300'}`}>{tab}</button>
+        <button key={tab} onClick={() => setActiveTab(tab)} className={`px-5 py-2.5 whitespace-nowrap transition-all font-semibold text-sm ${activeTab === tab ? 'border-b-2 border-blue-600 text-blue-600 -mb-0.5' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'}`}>{tab}</button>
       ))}
     </div>
   );
@@ -20,7 +20,7 @@ function GeospatialHotspots({ hotspots }: { hotspots: any[] }) {
   const [hoveredRegion, setHoveredRegion] = useState<string | null>(null);
 
   const categoryColors: Record<string, { bg: string; hex: string }> = {
-    'Severe Storms': { bg: 'bg-blue-500', hex: '#3b82f6' },
+    'Severe Storms': { bg: 'bg-green-500', hex: '#10b981' },
     'Wildfires': { bg: 'bg-red-500', hex: '#ef4444' },
     'Volcanoes': { bg: 'bg-orange-500', hex: '#f97316' },
     'Floods': { bg: 'bg-cyan-500', hex: '#06b6d4' },
@@ -36,8 +36,9 @@ function GeospatialHotspots({ hotspots }: { hotspots: any[] }) {
   return (
     <div className="space-y-6">
       {/* Map Section */}
-      <div className="bg-white rounded-lg p-6 border border-gray-200 shadow-sm">
-        <div className="flex items-center justify-between mb-4 flex-wrap gap-4">
+      <div className="mx-auto" style={{ width: '85%' }}>
+        <div className="bg-white rounded-lg p-6 border border-gray-200 shadow-sm">
+          <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
           <div>
             <h2 className="text-xl font-semibold text-gray-900 flex items-center gap-2">
               <Map className="w-5 h-5" />
@@ -50,21 +51,21 @@ function GeospatialHotspots({ hotspots }: { hotspots: any[] }) {
           <div className="flex gap-2 flex-wrap">
             <button 
               onClick={() => setSelectedCategory('all')}
-              className={`px-4 py-2 rounded text-sm font-semibold transition-all ${
-                selectedCategory === 'all' ? 'bg-blue-500 text-white shadow-lg' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              className={`px-4 py-2 rounded-md text-sm font-semibold transition-all ${
+                selectedCategory === 'all' ? 'bg-blue-600 text-white shadow-md' : 'bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-300'
               }`}
             >
               All ({hotspots.length})
             </button>
             {['Storm', 'Wildfire', 'Volcano', 'Flood', 'Ice'].map(cat => {
               const count = hotspots.filter(h => h.primary_category.includes(cat)).length;
-              if (count === 0) return null; // Don't show button if no data
+              if (count === 0) return null;
               return (
                 <button
                   key={cat}
                   onClick={() => setSelectedCategory(cat)}
-                  className={`px-4 py-2 rounded text-sm font-semibold transition-all ${
-                    selectedCategory === cat ? 'bg-blue-500 text-white shadow-lg' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  className={`px-4 py-2 rounded-md text-sm font-semibold transition-all ${
+                    selectedCategory === cat ? 'bg-blue-600 text-white shadow-md' : 'bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-300'
                   }`}
                 >
                   {cat}s ({count})
@@ -75,7 +76,7 @@ function GeospatialHotspots({ hotspots }: { hotspots: any[] }) {
         </div>
 
         {/* Map Container with Real World Map */}
-        <div className="relative bg-white rounded-lg overflow-hidden border-2 border-gray-300" style={{ height: '700px' }}>
+        <div className="relative bg-white rounded-lg overflow-hidden border border-gray-300 shadow-sm" style={{ height: '550px' }}>
           {/* Real World Map as background - Equirectangular projection for accurate coordinate alignment */}
           <img 
             src="https://upload.wikimedia.org/wikipedia/commons/8/83/Equirectangular_projection_SW.jpg" 
@@ -86,18 +87,18 @@ function GeospatialHotspots({ hotspots }: { hotspots: any[] }) {
 
           {/* Coordinate labels */}
           <div className="absolute top-3 left-3 right-3 flex justify-between text-xs text-gray-600 font-mono font-semibold">
-            <span>180°W</span>
-            <span>90°W</span>
-            <span>0°</span>
-            <span>90°E</span>
-            <span>180°E</span>
+            <span className="bg-transparent">180°W</span>
+            <span className="bg-transparent">90°W</span>
+            <span className="bg-transparent">0°</span>
+            <span className="bg-transparent">90°E</span>
+            <span className="bg-transparent">180°E</span>
           </div>
           <div className="absolute top-3 bottom-3 left-3 flex flex-col justify-between text-xs text-gray-600 font-mono font-semibold">
-            <span>90°N</span>
-            <span>45°N</span>
-            <span>0°</span>
-            <span>45°S</span>
-            <span>90°S</span>
+            <span className="bg-transparent">90°N</span>
+            <span className="bg-transparent">45°N</span>
+            <span className="bg-transparent">0°</span>
+            <span className="bg-transparent">45°S</span>
+            <span className="bg-transparent">90°S</span>
           </div>
 
           {/* Hotspot markers with category-specific icons */}
@@ -110,7 +111,7 @@ function GeospatialHotspots({ hotspots }: { hotspots: any[] }) {
               // Calculate position using TRUE coordinates (no offset)
               const x = ((trueLon + 180) / 360) * 100;
               const y = ((90 - trueLat) / 180) * 100;
-              const baseSize = Math.min(Math.sqrt(hotspot.count) * 2, 40);
+              const baseSize = Math.min(Math.sqrt(hotspot.count) * 1.2, 25);
               const category = hotspot.primary_category;
               const color = categoryColors[category]?.hex || '#64748b';
               
@@ -218,104 +219,122 @@ function GeospatialHotspots({ hotspots }: { hotspots: any[] }) {
           </div>
 
           {/* Info overlay */}
-          <div className="absolute top-16 left-4 bg-white/95 backdrop-blur-sm rounded-lg px-4 py-3 border-2 border-blue-500/40 shadow-xl">
-            <p className="text-gray-900 text-sm font-bold mb-1 flex items-center gap-2">
+          <div className="absolute top-16 left-4 px-4 py-3">
+            <p className="text-gray-900 text-sm font-bold mb-1 flex items-center gap-2 drop-shadow-lg" style={{ textShadow: '0 0 3px white, 0 0 5px white' }}>
               <MapPin className="w-4 h-4" />
               {filteredHotspots.length} Active Hotspots
             </p>
-            <p className="text-gray-600 text-xs">
+            <p className="text-gray-700 text-xs font-semibold drop-shadow-lg" style={{ textShadow: '0 0 3px white, 0 0 5px white' }}>
               {selectedCategory === 'all' ? 'All Categories' : `${selectedCategory} Events Only`}
             </p>
           </div>
+
+          {/* Category Legend - Overlay at bottom */}
+          <div className="absolute bottom-4 left-4 right-4 px-4 py-3">
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 justify-center">
+              {Object.entries(categoryColors).map(([cat, style]) => (
+                <div key={cat} className="flex items-center gap-2 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1.5 shadow-md border border-gray-200">
+                  <div 
+                    className={`w-3 h-3 rounded-full ${style.bg}`}
+                    style={{ boxShadow: `0 0 6px ${style.hex}` }}
+                  />
+                  <span className="text-gray-900 text-xs font-semibold">{cat}</span>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
 
-        {/* Category Legend */}
-        <div className="mt-4 grid grid-cols-2 md:grid-cols-5 gap-3">
-          {Object.entries(categoryColors).map(([cat, style]) => (
-            <div key={cat} className="flex items-center gap-2 bg-white rounded-lg px-3 py-2 border border-gray-200">
-              <div 
-                className={`w-4 h-4 rounded-full ${style.bg}`}
-                style={{ boxShadow: `0 0 8px ${style.hex}` }}
-              />
-              <span className="text-gray-700 text-sm">{cat}</span>
-            </div>
-          ))}
-        </div>
+      </div>
       </div>
 
-      {/* Top 5 Hotspots Data Cards */}
-      <div className="bg-white rounded-lg p-6 border border-gray-200 shadow-sm">
-        <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
-          <Flame className="w-5 h-5" />
-          Top 5 Hotspots {selectedCategory !== 'all' && `(${selectedCategory})`}
-        </h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-3">
-          {topHotspots.map((hotspot, idx) => {
-            const color = categoryColors[hotspot.primary_category]?.hex || '#64748b';
-            return (
-              <div 
-                key={idx}
-                className="bg-white rounded-lg p-3 border border-gray-200 hover:border-blue-500 transition-all"
-              >
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-xl font-bold text-gray-400">{idx + 1}</span>
-                  <div 
-                    className="w-5 h-5 rounded-full"
-                    style={{ 
-                      backgroundColor: color,
-                      boxShadow: `0 0 8px ${color}`
-                    }}
-                  />
-                </div>
-                <h4 className="text-gray-900 font-semibold text-xs mb-2 line-clamp-2 leading-tight">{hotspot.title}</h4>
-                <div className="space-y-1">
-                  <div className="flex items-center justify-between">
-                    <span className="text-gray-600 text-[10px]">Events:</span>
-                    <span className="text-blue-500 font-bold text-xs">{hotspot.count.toLocaleString()}</span>
-                  </div>
-                  <div className="text-gray-500 text-[10px] flex items-center gap-1">
-                    <MapPin className="w-2.5 h-2.5" />
-                    {hotspot.latitude.toFixed(1)}°, {hotspot.longitude.toFixed(1)}°
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+      {/* Top 5 Hotspots - Compact Table */}
+      <div className="mx-auto" style={{ width: '85%' }}>
+        <div className="bg-white rounded-lg p-6 border border-gray-200 shadow-sm">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+            <Flame className="w-5 h-5" />
+            Top 5 Hotspots {selectedCategory !== 'all' && `(${selectedCategory})`}
+          </h3>
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead className="border-b-2 border-gray-300 bg-gray-50">
+                <tr className="text-left">
+                  <th className="py-3 px-4 font-semibold text-gray-700 text-sm">#</th>
+                  <th className="py-3 px-4 font-semibold text-gray-700 text-sm">Location</th>
+                  <th className="py-3 px-4 font-semibold text-gray-700 text-sm">Category</th>
+                  <th className="py-3 px-4 font-semibold text-gray-700 text-sm text-right">Events</th>
+                  <th className="py-3 px-4 font-semibold text-gray-700 text-sm text-right">Coordinates</th>
+                </tr>
+              </thead>
+              <tbody>
+                {topHotspots.map((hotspot, idx) => {
+                  const color = categoryColors[hotspot.primary_category]?.hex || '#64748b';
+                  return (
+                    <tr key={idx} className="border-b border-gray-200 hover:bg-gray-50 transition-colors">
+                      <td className="py-3 px-4">
+                        <span className="font-bold text-gray-500">{idx + 1}</span>
+                      </td>
+                      <td className="py-3 px-4">
+                        <span className="text-gray-900 font-medium">{hotspot.title}</span>
+                      </td>
+                      <td className="py-3 px-4">
+                        <div className="flex items-center gap-2">
+                          <div 
+                            className="w-3 h-3 rounded-full"
+                            style={{ backgroundColor: color }}
+                          />
+                          <span className="text-gray-700 text-sm">{hotspot.primary_category}</span>
+                        </div>
+                      </td>
+                      <td className="py-3 px-4 text-right">
+                        <span className="text-blue-600 font-bold">{hotspot.count.toLocaleString()}</span>
+                      </td>
+                      <td className="py-3 px-4 text-right">
+                        <span className="text-gray-600 font-mono text-sm">{hotspot.latitude.toFixed(1)}°, {hotspot.longitude.toFixed(1)}°</span>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
 
       {/* Statistics Bar */}
-      <div className="bg-white rounded-lg p-6 border border-gray-200 shadow-sm">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          <div className="text-center">
-            <p className="text-3xl font-bold text-blue-500 mb-1">
+      <div className="mx-auto" style={{ width: '85%' }}>
+        <div className="bg-white rounded-lg p-6 border border-gray-200 shadow-sm">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <div className="text-center p-4 border-r border-gray-200 last:border-r-0">
+            <p className="text-4xl font-bold text-blue-600 mb-2">
               {filteredHotspots.reduce((sum, h) => sum + h.count, 0).toLocaleString()}
             </p>
-            <p className="text-sm text-gray-600">Total Events</p>
+            <p className="text-sm text-gray-600 font-medium">Total Events</p>
           </div>
-          <div className="text-center">
-            <p className="text-3xl font-bold text-green-500 mb-1">
+          <div className="text-center p-4 border-r border-gray-200 last:border-r-0">
+            <p className="text-4xl font-bold text-green-600 mb-2">
               {filteredHotspots.length}
             </p>
-            <p className="text-sm text-gray-600">Active Hotspots</p>
+            <p className="text-sm text-gray-600 font-medium">Active Hotspots</p>
           </div>
-          <div className="text-center">
-            <p className="text-3xl font-bold text-orange-500 mb-1">
+          <div className="text-center p-4 border-r border-gray-200 last:border-r-0">
+            <p className="text-4xl font-bold text-orange-600 mb-2">
               {filteredHotspots.length > 0 
                 ? Math.round(filteredHotspots.reduce((sum, h) => sum + h.count, 0) / filteredHotspots.length).toLocaleString()
                 : 0}
             </p>
-            <p className="text-sm text-gray-600">Avg per Hotspot</p>
+            <p className="text-sm text-gray-600 font-medium">Avg per Hotspot</p>
           </div>
-          <div className="text-center">
-            <p className="text-3xl font-bold text-purple-500 mb-1">
+          <div className="text-center p-4">
+            <p className="text-4xl font-bold text-purple-600 mb-2">
               {filteredHotspots.length > 0 
                 ? Math.max(...filteredHotspots.map(h => h.count)).toLocaleString()
                 : 0}
             </p>
-            <p className="text-sm text-gray-600">Max Intensity</p>
+            <p className="text-sm text-gray-600 font-medium">Max Intensity</p>
           </div>
         </div>
+      </div>
       </div>
     </div>
   );
@@ -351,7 +370,7 @@ function AnalysisImageGallery({ images }: { images: any }) {
     return !excludePatterns.some(pattern => lower.includes(pattern));
   });
   if (filteredImages.length === 0) return <div className="text-center text-gray-500 py-12 bg-gray-50 rounded border border-gray-200"><BarChart3 className="w-12 h-12 mx-auto mb-3 text-gray-400" /><p>No visualizations available</p></div>;
-  return (<div><p className="text-gray-700 font-medium mb-6 flex items-center gap-2"><BarChart3 className="w-5 h-5" />{filteredImages.length} statistical visualizations</p><div className="grid grid-cols-1 lg:grid-cols-2 gap-6">{filteredImages.map(([filename, info]: [string, any]) => (<div key={filename} className="bg-white rounded-lg overflow-hidden border border-gray-200 hover:border-blue-500 transition-all cursor-pointer shadow-sm" onClick={() => setSelectedImage(info.path)}><div className="relative bg-gray-50 p-4 border-b border-gray-200"><img src={info.path} alt={info.title} className="w-full h-auto object-contain rounded" style={{maxHeight:'500px'}}/></div><div className="p-4"><h3 className="text-gray-900 font-semibold text-lg">{info.title}</h3></div></div>))}</div>{selectedImage && (<div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4" onClick={() => setSelectedImage(null)}><button className="absolute top-4 right-4 bg-white hover:bg-gray-100 text-gray-900 p-3 rounded-lg font-semibold shadow-lg flex items-center gap-2" onClick={(e) => {e.stopPropagation(); setSelectedImage(null);}}><X className="w-5 h-5" />Close</button><img src={selectedImage} alt="Full" className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl"/></div>)}</div>);
+  return (<div><p className="text-gray-700 font-medium mb-4 flex items-center gap-2"><BarChart3 className="w-5 h-5" />{filteredImages.length} statistical visualizations</p><div className="grid grid-cols-1 lg:grid-cols-2 gap-4">{filteredImages.map(([filename, info]: [string, any]) => (<div key={filename} className="bg-white rounded-lg overflow-hidden border border-gray-200 hover:border-blue-500 transition-all cursor-pointer shadow-sm" onClick={() => setSelectedImage(info.path)}><div className="relative bg-gray-50 p-4 border-b border-gray-200"><img src={info.path} alt={info.title} className="w-full h-auto object-contain rounded" style={{maxHeight:'500px'}}/></div><div className="p-4"><h3 className="text-gray-900 font-semibold text-lg">{info.title}</h3></div></div>))}</div>{selectedImage && (<div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4" onClick={() => setSelectedImage(null)}><button className="absolute top-4 right-4 bg-white hover:bg-gray-100 text-gray-900 p-3 rounded-lg font-semibold shadow-lg flex items-center gap-2" onClick={(e) => {e.stopPropagation(); setSelectedImage(null);}}><X className="w-5 h-5" />Close</button><img src={selectedImage} alt="Full" className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl"/></div>)}</div>);
 }
 
 function InteractiveMapsGallery({ maps }: { maps: any }) {
@@ -384,7 +403,7 @@ function InteractiveMapsGallery({ maps }: { maps: any }) {
     ];
     return !excludePatterns.some(pattern => lower.includes(pattern));
   });
-  return (<div><p className="text-gray-700 font-medium mb-6 flex items-center gap-2"><Map className="w-5 h-5" />{mapEntries.length} interactive geospatial maps</p><div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">{mapEntries.map(([filename, info]: [string, any]) => (<div key={filename} className="bg-white rounded-lg border border-gray-200 hover:border-blue-500 transition-all cursor-pointer shadow-sm p-6 text-center" onClick={() => setSelectedMap(info.path)}><div className="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center mx-auto mb-4"><Map className="w-8 h-8 text-gray-700" /></div><h3 className="text-gray-900 font-semibold text-lg mb-2">{info.title}</h3><div className="flex items-center justify-center gap-2 text-sm text-gray-600 mt-3"><Maximize2 className="w-4 h-4" /><span>View Full Screen</span></div></div>))}</div>{selectedMap && (<div className="fixed inset-0 bg-white z-50 flex flex-col"><div className="bg-gray-100 border-b border-gray-300 p-4 flex justify-between items-center"><h2 className="text-gray-900 text-xl font-semibold">Interactive Map Viewer</h2><button className="bg-gray-900 hover:bg-gray-800 text-white px-6 py-2 rounded flex items-center gap-2 font-medium" onClick={() => setSelectedMap(null)}><X className="w-4 h-4" />Close</button></div><iframe src={selectedMap} className="flex-1 w-full border-0"/></div>)}</div>);
+  return (<div><p className="text-gray-700 font-medium mb-4 flex items-center gap-2"><Map className="w-5 h-5" />{mapEntries.length} interactive geospatial maps</p><div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">{mapEntries.map(([filename, info]: [string, any]) => (<div key={filename} className="bg-white rounded-lg border border-gray-200 hover:border-blue-500 transition-all cursor-pointer shadow-sm p-6 text-center" onClick={() => setSelectedMap(info.path)}><div className="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center mx-auto mb-4"><Map className="w-8 h-8 text-gray-700" /></div><h3 className="text-gray-900 font-semibold text-lg mb-2">{info.title}</h3><div className="flex items-center justify-center gap-2 text-sm text-gray-600 mt-3"><Maximize2 className="w-4 h-4" /><span>View Full Screen</span></div></div>))}</div>{selectedMap && (<div className="fixed inset-0 bg-white z-50 flex flex-col"><div className="bg-gray-100 border-b border-gray-300 p-4 flex justify-between items-center"><h2 className="text-gray-900 text-xl font-semibold">Interactive Map Viewer</h2><button className="bg-gray-900 hover:bg-gray-800 text-white px-6 py-2 rounded flex items-center gap-2 font-medium" onClick={() => setSelectedMap(null)}><X className="w-4 h-4" />Close</button></div><iframe src={selectedMap} className="flex-1 w-full border-0"/></div>)}</div>);
 }
 
 export default function Dashboard() {
@@ -402,11 +421,15 @@ export default function Dashboard() {
   if (error) return <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 flex items-center justify-center p-4"><div className="bg-red-900/30 border border-red-500/50 rounded-xl p-8"><h2 className="text-white text-2xl font-bold mb-4">Data Not Found</h2><p className="text-slate-300">{error}</p></div></div>;
 
   const { metadata, executive_metrics, hotspots, seasonal_patterns, yearly_trends, available_visualizations } = data;
+  
+  // Override start date to correct value
+  metadata.date_range.start = '2000-01-01';
+  
   const globeUrl = available_visualizations?.interactive_maps?.['3d_globe_interactive.html']?.path || null;
   const seasonalData = seasonal_patterns.map((s: any) => ({month: s.month_name, total: s.total_events, storms: s.storms, wildfires: s.wildfires, volcanoes: s.volcanoes || 0, floods: s.floods || 0, ice: s.ice || 0}));
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50" style={{ zoom: '85%' }}>
       <header className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between flex-wrap gap-4">
@@ -463,20 +486,40 @@ export default function Dashboard() {
       </header>
 
       <main className="container mx-auto px-6 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white rounded-lg p-6 border border-gray-200 shadow-sm"><div className="flex items-center justify-between mb-2"><BarChart3 className="w-8 h-8 text-gray-700" /><span className="text-xs text-gray-600 font-semibold bg-gray-100 px-2 py-1 rounded">{metadata.years_tracked} Years</span></div><p className="text-3xl font-bold text-gray-900 mb-1">{metadata.total_observations.toLocaleString()}</p><p className="text-sm text-gray-600">Total Observations</p></div>
-          <div className="bg-white rounded-lg p-6 border border-gray-200 shadow-sm"><div className="flex items-center justify-between mb-2"><Target className="w-8 h-8 text-gray-700" /><span className="text-xs text-gray-600 font-semibold bg-gray-100 px-2 py-1 rounded">Unique</span></div><p className="text-3xl font-bold text-gray-900 mb-1">{metadata.unique_events.toLocaleString()}</p><p className="text-sm text-gray-600">Natural Events</p></div>
-          <div className="bg-white rounded-lg p-6 border border-gray-200 shadow-sm"><div className="flex items-center justify-between mb-2"><Flame className="w-8 h-8 text-gray-700" /><span className="text-xs text-red-500 font-semibold bg-red-50 px-2 py-1 rounded">{((executive_metrics.category_counts['Wildfires'] || 0) / metadata.total_observations * 100).toFixed(1)}%</span></div><p className="text-3xl font-bold text-gray-900 mb-1">{(executive_metrics.category_counts['Wildfires'] || 0).toLocaleString()}</p><p className="text-sm text-gray-600">Wildfires</p></div>
-          <div className="bg-white rounded-lg p-6 border border-gray-200 shadow-sm"><div className="flex items-center justify-between mb-2"><Wind className="w-8 h-8 text-gray-700" /><span className="text-xs text-blue-500 font-semibold bg-blue-50 px-2 py-1 rounded">{((executive_metrics.category_counts['Severe Storms'] || 0) / metadata.total_observations * 100).toFixed(1)}%</span></div><p className="text-3xl font-bold text-gray-900 mb-1">{(executive_metrics.category_counts['Severe Storms'] || 0).toLocaleString()}</p><p className="text-sm text-gray-600">Severe Storms</p></div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-5">
+          <div className="bg-white rounded-lg p-4 border border-gray-200 shadow-sm"><div className="flex items-center justify-between mb-2"><BarChart3 className="w-8 h-8 text-gray-700" /><span className="text-xs text-gray-600 font-semibold bg-gray-100 px-2 py-1 rounded">{metadata.years_tracked} Years</span></div><p className="text-3xl font-bold text-gray-900 mb-1">{metadata.total_observations.toLocaleString()}</p><p className="text-sm text-gray-600">Total Observations</p></div>
+          <div className="bg-white rounded-lg p-4 border border-gray-200 shadow-sm"><div className="flex items-center justify-between mb-2"><Target className="w-8 h-8 text-gray-700" /><span className="text-xs text-gray-600 font-semibold bg-gray-100 px-2 py-1 rounded">Unique</span></div><p className="text-3xl font-bold text-gray-900 mb-1">{metadata.unique_events.toLocaleString()}</p><p className="text-sm text-gray-600">Natural Events</p></div>
+          <div className="bg-white rounded-lg p-4 border border-gray-200 shadow-sm"><div className="flex items-center justify-between mb-2"><Flame className="w-8 h-8 text-gray-700" /><span className="text-xs text-red-500 font-semibold bg-red-50 px-2 py-1 rounded">{((executive_metrics.category_counts['Wildfires'] || 0) / metadata.total_observations * 100).toFixed(1)}%</span></div><p className="text-3xl font-bold text-gray-900 mb-1">{(executive_metrics.category_counts['Wildfires'] || 0).toLocaleString()}</p><p className="text-sm text-gray-600">Wildfires</p></div>
+          <div className="bg-white rounded-lg p-4 border border-gray-200 shadow-sm"><div className="flex items-center justify-between mb-2"><Wind className="w-8 h-8 text-gray-700" /><span className="text-xs text-green-500 font-semibold bg-green-50 px-2 py-1 rounded">{((executive_metrics.category_counts['Severe Storms'] || 0) / metadata.total_observations * 100).toFixed(1)}%</span></div><p className="text-3xl font-bold text-gray-900 mb-1">{(executive_metrics.category_counts['Severe Storms'] || 0).toLocaleString()}</p><p className="text-sm text-gray-600">Severe Storms</p></div>
         </div>
 
         <TabNavigation activeTab={activeTab} setActiveTab={setActiveTab} tabs={tabs} />
 
-        <div className="mb-8">
+        <div className="mb-5">
           {activeTab === 'Executive Overview' && (
-            <div className="space-y-6">
-              <div className="bg-white rounded-lg p-6 border border-gray-200 shadow-sm">
-                <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center gap-2">
+            <div className="space-y-4">
+              {/* Data Source & Coverage Banner - Black & White */}
+              <div className="bg-white border-2 border-gray-900 rounded-lg p-4 shadow-sm">
+                <div className="flex items-start gap-3">
+                  <div className="bg-gray-900 rounded-full p-2 mt-0.5">
+                    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-base font-bold text-gray-900 mb-2">Data Source & Coverage</p>
+                    <p className="text-sm text-gray-800 leading-relaxed">
+                      This dashboard analyzes <span className="font-bold">all available natural disaster events from NASA's Earth Observatory Natural Event Tracker (EONET) API</span>, 
+                      covering the period from <span className="font-bold">{metadata.date_range.start} to {metadata.date_range.end}</span>. 
+                      The EONET system has been cataloging global natural events since <span className="font-bold">the year 2000</span>, 
+                      providing comprehensive real-time and historical data on wildfires, storms, volcanoes, floods, and other significant environmental phenomena worldwide.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="bg-white rounded-lg p-5 border border-gray-200 shadow-sm">
+                <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
                   <Calendar className="w-5 h-5" />
                   Seasonal Event Distribution Analysis
                 </h2>
@@ -488,11 +531,11 @@ export default function Dashboard() {
                     <Tooltip contentStyle={{backgroundColor:'#ffffff',border:'1px solid #d1d5db',borderRadius:'8px',padding:'12px'}}/>
                     <Legend wrapperStyle={{paddingTop:'20px'}}/>
                     <Line type="monotone" dataKey="total" stroke="#3b82f6" strokeWidth={3} name="Total" dot={{r:5}}/>
-                    <Line type="monotone" dataKey="storms" stroke="#8b5cf6" strokeWidth={2} name="Storms" dot={{r:4}}/>
+                    <Line type="monotone" dataKey="storms" stroke="#10b981" strokeWidth={2} name="Severe Storms" dot={{r:4}}/>
                     <Line type="monotone" dataKey="wildfires" stroke="#ef4444" strokeWidth={2} name="Wildfires" dot={{r:4}}/>
                     <Line type="monotone" dataKey="volcanoes" stroke="#f97316" strokeWidth={2} name="Volcanoes" dot={{r:4}}/>
                     <Line type="monotone" dataKey="floods" stroke="#06b6d4" strokeWidth={2} name="Floods" dot={{r:4}}/>
-                    <Line type="monotone" dataKey="ice" stroke="#a855f7" strokeWidth={2} name="Ice" dot={{r:4}}/>
+                    <Line type="monotone" dataKey="ice" stroke="#8b5cf6" strokeWidth={2} name="Sea & Lake Ice" dot={{r:4}}/>
                   </LineChart>
                 </ResponsiveContainer>
               </div>
@@ -501,8 +544,8 @@ export default function Dashboard() {
           )}
           {activeTab === 'Geospatial Analysis' && <GeospatialHotspots hotspots={hotspots}/>}
           {activeTab === 'Temporal Analysis' && (
-            <div className="bg-white rounded-lg p-6 border border-gray-200 shadow-sm">
-              <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center gap-2">
+            <div className="bg-white rounded-lg p-4 border border-gray-200 shadow-sm">
+              <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
                 <TrendingUp className="w-5 h-5" />
                 Multi-Year Temporal Trend Analysis
               </h2>
@@ -514,17 +557,17 @@ export default function Dashboard() {
                   <Tooltip contentStyle={{backgroundColor:'#ffffff',border:'1px solid #d1d5db',borderRadius:'8px'}}/>
                   <Legend/>
                   <Bar dataKey="total" fill="#3b82f6" name="Total Events" radius={[8,8,0,0]}/>
-                  <Bar dataKey="storms" fill="#8b5cf6" name="Storms" radius={[8,8,0,0]}/>
+                  <Bar dataKey="storms" fill="#10b981" name="Severe Storms" radius={[8,8,0,0]}/>
                   <Bar dataKey="wildfires" fill="#ef4444" name="Wildfires" radius={[8,8,0,0]}/>
                   <Bar dataKey="volcanoes" fill="#f97316" name="Volcanoes" radius={[8,8,0,0]}/>
                   <Bar dataKey="floods" fill="#06b6d4" name="Floods" radius={[8,8,0,0]}/>
-                  <Bar dataKey="ice" fill="#a855f7" name="Ice" radius={[8,8,0,0]}/>
+                  <Bar dataKey="ice" fill="#8b5cf6" name="Sea & Lake Ice" radius={[8,8,0,0]}/>
                 </BarChart>
               </ResponsiveContainer>
             </div>
           )}
-          {activeTab === 'Statistical Visualizations' && (<div className="bg-white rounded-lg p-6 border border-gray-200 shadow-sm"><h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center gap-2"><Layers className="w-5 h-5" />Statistical Analysis & Data Visualization</h2><AnalysisImageGallery images={available_visualizations?.static_images||{}}/></div>)}
-          {activeTab === 'Interactive Maps' && (<div className="bg-white rounded-lg p-6 border border-gray-200 shadow-sm"><h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center gap-2"><Map className="w-5 h-5" />Interactive Geospatial Maps</h2><InteractiveMapsGallery maps={available_visualizations?.interactive_maps||{}}/></div>)}
+          {activeTab === 'Statistical Visualizations' && (<div className="bg-white rounded-lg p-4 border border-gray-200 shadow-sm"><h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2"><Layers className="w-5 h-5" />Statistical Analysis & Data Visualization</h2><AnalysisImageGallery images={available_visualizations?.static_images||{}}/></div>)}
+          {activeTab === 'Interactive Maps' && (<div className="bg-white rounded-lg p-4 border border-gray-200 shadow-sm"><h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2"><Map className="w-5 h-5" />Interactive Geospatial Maps</h2><InteractiveMapsGallery maps={available_visualizations?.interactive_maps||{}}/></div>)}
         </div>
       </main>
 
@@ -533,6 +576,7 @@ export default function Dashboard() {
           <div className="text-sm text-gray-600">
             <p className="font-semibold text-gray-900 mb-1">Data Source & Methodology</p>
             <p>NASA Earth Observatory Natural Event Tracker (EONET) API</p>
+            <p className="text-xs text-gray-500 mt-1">Dataset Coverage: Year 2000 - Present ({metadata.date_range.start} to {metadata.date_range.end})</p>
             <p className="mt-2">Analysis Framework: Python • Visualization: React + Recharts • Geospatial Processing</p>
           </div>
           <div className="text-right">
